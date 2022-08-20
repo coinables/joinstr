@@ -9,7 +9,7 @@ from nostr.message_type import ClientMessageType
 from nostr.filter import Filter, Filters
 from nostr.key import generate_private_key, get_public_key
 
-url = "http://127.0.0.1:18332/wallet/<WALLET_NAME>"
+url = "http://127.0.0.1:<PORT>/wallet/<WALLET_NAME>"
 
 '''
 Change RPC credentials
