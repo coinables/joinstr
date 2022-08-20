@@ -64,7 +64,8 @@ event id: 9b5d4bf279b59e2b6e539e683fba83da72dce2b640360aa95db1b1400be93190
 2. Create a NIP to support sharing a random secret betwen clients and relay for a round.
 3. Break UTXOs in pool denominations before coinjoin if amount exceeds pool denomination by more than 50000 sats.
 5. Do not allow registering different types of inputs for a round.
-6. Create an Android app.
+6. Store events locally for a few hours and delete them from relays later.
+7. Create an Android app.
 
 Do not use this script for mainnet as there are several bugs in the code and lot of scope for improvement.
 
