@@ -67,6 +67,8 @@ event id: 9b5d4bf279b59e2b6e539e683fba83da72dce2b640360aa95db1b1400be93190
 6. Store events locally for a few hours and delete them from relays later.
 7. Create an Android app.
 
-Do not use this script for mainnet as there are several bugs in the code and lot of scope for improvement.
-
 :information_source: Feel free to create issues, pull request and contact me by email at alicexbt[at]protonmail[dot]com
+
+---
+
+Do not use this script for mainnet as there are several bugs in the code and lot of scope for improvement.
