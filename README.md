@@ -17,7 +17,7 @@
  3. Similar check happens every 30 seconds for outputs. Last peer should create a PSBT.
  4. Unsigned PSBT will be printed and signed by wallet with `walletprocesspsbt` RPC.
  5. Script will check signed PSBTs and last peer should finalize coinjoin transaction once 5 signed PSBTs are received.
- 6. Coinjoin transaction will be broadcasted and txid will printed.
+ 6. Coinjoin transaction will be broadcasted and txid will be printed.
 
  Note: Every step is followed by an eventid which represents the id for event published using python-nostr and could be checkedusing [nostr gateway](https://nostr.com/).
 
