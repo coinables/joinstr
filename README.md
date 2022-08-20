@@ -53,6 +53,11 @@ Coinjoin tx: 75e490b10b15a6a0422f25ff66ad98ef70390c8fecaac02712705dce8cc3564b
 event id: 9b5d4bf279b59e2b6e539e683fba83da72dce2b640360aa95db1b1400be93190
 ```
 
+**First coinjoin transaction using joinstr on signet:**
+
+![image](https://user-images.githubusercontent.com/94559964/185734421-6f79fbae-57eb-4620-b4d5-bfa8af203eec.png)
+
+
 **TO DO:**
 
 1. Send each request using new tor circuit.
