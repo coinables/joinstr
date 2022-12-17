@@ -7,7 +7,7 @@ from nostr.event import Event
 from nostr.relay_manager import RelayManager
 from nostr.message_type import ClientMessageType
 from nostr.filter import Filter, Filters
-from nostr.key import generate_private_key, get_public_key
+from nostr.key import PrivateKey
 
 url = "http://127.0.0.1:<PORT>/wallet/<WALLET_NAME>"
 
@@ -22,8 +22,8 @@ headers = {
 
 def getkey():
 
-    private_key = generate_private_key()
-    public_key = get_public_key(private_key)
+    private_key = PrivateKey()
+    public_key = private_key.public_key
 
     return public_key,private_key
 
