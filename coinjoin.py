@@ -43,8 +43,8 @@ def publish():
 
     public_key, private_key = getkey()
 
-    event = Event(public_key, json.dumps(data), kind=892)
-    event.sign(private_key)
+    event = Event(public_key.hex(), json.dumps(data), kind=892)
+    event.sign(private_key.hex())
     eventid = event.id
 
     message = json.dumps([ClientMessageType.EVENT, event.to_json_object()])
