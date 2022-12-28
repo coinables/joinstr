@@ -169,15 +169,12 @@ def checkinputs():
     event_type = "input"
     event,output_list,desc_list,upsbt,spsbt,num_i = getevents()
 
-    '''
-    TODO: Check if inputs contain any duplicates
-    '''
-
     if num_i % 5 !=0 or num_i == 0:
         checkinputs()
     else:
         for k in range(0,5):
-            round_desc_list.append(desc_list[k])
+            if desc_list[k] not in round_desc_list:
+                round_desc_list.append(desc_list[k])
 
         return round_desc_list,num_i
 
