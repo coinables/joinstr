@@ -112,6 +112,33 @@ def getevents():
 
     return event,output_list,desc_list,upsbt,spsbt,i
 
+def checkevents(event_type):
+    time.sleep(30)
+    event, output_list, desc_list, upsbt, spsbt, num_e = getevents(event_type)
+
+    if num_e % 5 !=0 or num_e == 0:
+        checkevents(event_type)
+    else:
+        if event_type == 'input':
+            round_desc_list = []
+            for k in range(0,5):
+                if desc_list[k] not in round_desc_list:
+                    round_desc_list.append(desc_list[k])
+            return round_desc_list, num_e
+        elif event_type == 'output':
+            round_output_list = []
+            for k in range(0,5):
+                if output_list[k] not in round_output_list:
+                    round_output_list.append(output_list[k])
+            return round_output_list, num_e
+        elif event_type == 'signed':
+            round_spsbt_list = []
+            for k in range(0,5):
+                if spsbt[k] not in round_spsbt_list:
+                    round_spsbt_list.append(spsbt[k])
+            return round_spsbt_list, num_e
+
+
 def listunspent():
 
     payload = "{\"jsonrpc\": \"1.0\", \"id\": \"joinstr\", \"method\": \"listunspent\"}"
@@ -159,60 +186,6 @@ def signtx():
     return signed_psbt
 
 
-def checkinputs():
-
-    desc_list = []
-    round_desc_list = []
-
-    time.sleep(30)
-
-    event_type = "input"
-    event,output_list,desc_list,upsbt,spsbt,num_i = getevents()
-
-    if num_i % 5 !=0 or num_i == 0:
-        checkinputs()
-    else:
-        for k in range(0,5):
-            if desc_list[k] not in round_desc_list:
-                round_desc_list.append(desc_list[k])
-
-        return round_desc_list,num_i
-
-def checkoutputs():
-
-    output_list = []
-    round_output_list = []
-
-    time.sleep(30)
-
-    event_type = "output"
-    event,output_list,desc_list,upsbt,spsbt,num_o = getevents()
-
-    if num_o % 5 !=0 or num_o == 0:
-        checkoutputs()
-    else:
-        for k in range(0,5):
-            round_output_list.append(output_list[k])
-
-        return round_output_list,num_o
-
-def checkupsbt():
-
-    upsbt = []
-    round_upsbt =[]
-
-    time.sleep(30)
-
-    event_type = "unsigned"
-    event,output_list,desc_list,upsbt,spsbt,num_utx = getevents()
-
-    if num_utx == 0:
-        checkupsbt()
-    else:
-        round_upsbt = upsbt[0]
-
-        return round_upsbt,num_utx
-
 def combinetx():
 
     payload = "{\"jsonrpc\": \"1.0\",\r\n \"id\": \"joinstr\",\r\n  \"method\": \"combinepsbt\",\r\n  \"params\": [[\"" + str(round_spsbt_list[0]) + "\",\"" + str(round_spsbt_list[1]) + "\",\"" + str(round_spsbt_list[2]) + "\",\"" + str(round_spsbt_list[3]) + "\",\"" + str(round_spsbt_list[4]) + "\"]]\r\n}"
@@ -221,25 +194,6 @@ def combinetx():
     combined_psbt = response.json()['result']
 
     return combined_psbt
-
-
-def checkspsbt():
-
-    spsbt_list = []
-    round_spsbt_list =[]
-
-    time.sleep(30)
-
-    event_type = "signed"
-    event,output_list,desc_list,upsbt,spsbt_list,num_stx = getevents()
-
-    if num_stx % 5 !=0 or num_stx == 0:
-        checkspsbt()
-    else:
-        for k in range(0,5):
-            round_spsbt_list.append(spsbt_list[k])
-
-        return round_spsbt_list,num_stx
 
 
 def finalizetx():
@@ -285,7 +239,7 @@ if __name__=="__main__":
     while True:
         event_type = "input"
         try:
-            round_desc_list,num_i = checkinputs()
+            round_desc_list,num_i = checkevents('input')
         except:
             continue
         break
@@ -316,7 +270,7 @@ if __name__=="__main__":
     while True:
         event_type = "output"
         try:
-            round_output_list,num_o = checkoutputs()
+            round_output_list,num_o = checkevents('output')
         except:
             continue
         break
@@ -358,14 +312,6 @@ if __name__=="__main__":
 
     #Sign and publish tx
 
-    while True:
-        event_type = "unsigned"
-        try:
-            round_upsbt,num_utx = checkupsbt()
-        except:
-            continue
-        break
-
     event_type = "signed"
     event,output_list,desc_list,upsbt,spsbt,num_stx = getevents()
 
@@ -394,7 +340,7 @@ if __name__=="__main__":
     while True:
         event_type = "signed"
         try:
-            round_spsbt_list,num_stx = checkspsbt()
+            round_spsbt_list,num_stx = checkevents('signed')
         except:
             continue
         break
