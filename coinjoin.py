@@ -121,19 +121,19 @@ def checkevents(event_type):
     else:
         if event_type == 'input':
             round_desc_list = []
-            for k in range(0,5):
+            for k in range(len(desc_list) - 5, len(desc_list)):
                 if desc_list[k] not in round_desc_list:
                     round_desc_list.append(desc_list[k])
             return round_desc_list, num_e
         elif event_type == 'output':
             round_output_list = []
-            for k in range(0,5):
+            for k in range(len(output_list) - 5, len(output_list)):
                 if output_list[k] not in round_output_list:
                     round_output_list.append(output_list[k])
             return round_output_list, num_e
         elif event_type == 'signed':
             round_spsbt_list = []
-            for k in range(0,5):
+            for k in range(len(spsbt) - 5, len(spsbt)):
                 if spsbt[k] not in round_spsbt_list:
                     round_spsbt_list.append(spsbt[k])
             return round_spsbt_list, num_e
