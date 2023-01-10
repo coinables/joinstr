@@ -299,16 +299,9 @@ if __name__=="__main__":
 
         postmix_ov = (input_sum - 0.00001)/5
 
-
-        data = {}
-        data["unsigned_psbt"] = createtx()
-
-        eventid = publish()
-
-        upsbt = str(data["unsigned_psbt"])
+        upsbt = createtx()
 
         print("\nUnsigned PSBT: " + upsbt)
-        print("\nevent id:", eventid)
 
     #Sign and publish tx
 
