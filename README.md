@@ -1,6 +1,6 @@
 # joinstr
 
- ### coinjoin implementation using nostr (proof of concept)
+ ### coinjoin implementation using nostr
  
  ![image](https://user-images.githubusercontent.com/94559964/185734286-bc5f06ff-6a46-4669-93bb-5d6ef92631fb.png)
 
@@ -19,7 +19,7 @@
  5. Script will check signed PSBTs and last peer should finalize coinjoin transaction once 5 signed PSBTs are received.
  6. Coinjoin transaction will be broadcasted and txid will be printed.
 
- Note: Every step is followed by an eventid which represents the id for event published using python-nostr and could be checked using [nostr gateway](https://nostr.gutu/).
+ Note: Every step is followed by an eventid which represents the id for event published using python-nostr and could be checked using [nostr gateway](https://nostr.guru/).
 
 **Example:**
 
@@ -41,7 +41,6 @@ event id: 9449c9065bef356d21507a98f88b028b17fc1c49eb195c8d4420604fcaaef041
 ```
 Unsigned PSBT: cHNidP8BAP1yAQIAAAAFtMaoJYcXvOG5L3Yaz3YyS7gIt4h5/zzOrRRS3hrVvwoAAAAAAP////+o83geaSm4L76KToIUl5MiZqLAUbIDJLq6DWrjP/3b8AEAAAAA/////zEF3CXIvVHpIa7No1s1yg+KtyOfXTRSyWnOdXMfzcDwAQAAAAD/////wMa4XAgnU+39Ien+KG9rYtv8bLMNYakmZyY/QFfwLRcAAAAAAP/////5M42ID6uLmQTb2tnFHnN7UMpnDD25uN8ZX7A+GNSM3QEAAAAA/////wV4xwEAAAAAABYAFLmGGov0rz71uWQT0cGSkSlB4T7MeMcBAAAAAAAWABSc0/FM6Hdbdxh10IJkYOklVFWqjnjHAQAAAAAAFgAUPSZKe/w6PT6qIF+WhL4wHaFymjd4xwEAAAAAABYAFMx0rxYlpPWB3NFry4Ctk2eVi/UNeMcBAAAAAAAWABSzc4xK0VTfvjK0MHXrAUFLYgYnOgAAAAAAAAAAAAAAAAAAAA==
 
-event id: 976744b38fa9343fb79e1b5215512ead6ee08e5890d79a201fc5b872f6de4eba
 ```
 ```
 Signed PSBT: cHNidP8BAP1yAQIAAAAFtMaoJYcXvOG5L3Yaz3YyS7gIt4h5/zzOrRRS3hrVvwoAAAAAAP////+o83geaSm4L76KToIUl5MiZqLAUbIDJLq6DWrjP/3b8AEAAAAA/////zEF3CXIvVHpIa7No1s1yg+KtyOfXTRSyWnOdXMfzcDwAQAAAAD/////wMa4XAgnU+39Ien+KG9rYtv8bLMNYakmZyY/QFfwLRcAAAAAAP/////5M42ID6uLmQTb2tnFHnN7UMpnDD25uN8ZX7A+GNSM3QEAAAAA/////wV4xwEAAAAAABYAFLmGGov0rz71uWQT0cGSkSlB4T7MeMcBAAAAAAAWABSc0/FM6Hdbdxh10IJkYOklVFWqjnjHAQAAAAAAFgAUPSZKe/w6PT6qIF+WhL4wHaFymjd4xwEAAAAAABYAFMx0rxYlpPWB3NFry4Ctk2eVi/UNeMcBAAAAAAAWABSzc4xK0VTfvjK0MHXrAUFLYgYnOgAAAAAAAQBxAgAAAAG+qpMXZCy6tBuUlgo8JD0GVXKp60FkhwDeg2sF1fkFkwMAAAAA/f///wLo9wEAAAAAABYAFFfLA5xarC/w/SxeMDQ5tuXrYJLUWwMAAAAAAAAWABRfPf//hwMjHB4OKj87cU19XOSh7yOWAQABAR/o9wEAAAAAABYAFFfLA5xarC/w/SxeMDQ5tuXrYJLUAQhrAkcwRAIgOIhLoC5348U8YkEr4GU1K4yWskIOEXgW4Wsk/W2cR7ICIEJXqtOuDJ5CkwrSuwJLWtzab4dslbN3KuL/pyooMnOCASECRJvl+3RyUlXu61DrqTD6h3BfIemdE81xDPLB8hFTyAgAAAAAACICA77Cnd6o3kr0yc+91eabpOn5igs/MUMbudNYSS6oyMWMGFODDcpUAACAAQAAgAAAAIAAAAAAFAAAAAAAAAAA
@@ -62,10 +61,10 @@ event id: 9b5d4bf279b59e2b6e539e683fba83da72dce2b640360aa95db1b1400be93190
 **TO DO:**
 
 1. Send each request using new tor circuit.
-2. Create a NIP to support sharing a random secret betwen clients and relay for a round.
+2. Use NIP 38
 3. Break UTXOs in pool denominations before coinjoin if amount exceeds pool denomination by more than 50000 sats.
 5. Do not allow registering different types of inputs for a round.
-6. Store events locally for a few hours and delete them from relays later.
+6. Use NIP 9 to delete events after round is completed
 7. Create an Android app.
 
 :information_source: Feel free to create issues, pull request and contact me by email at alicexbt[at]protonmail[dot]com
