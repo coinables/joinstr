@@ -1,9 +1,8 @@
 # joinstr
 
  ### coinjoin implementation using nostr
- 
- ![image](https://user-images.githubusercontent.com/94559964/185734286-bc5f06ff-6a46-4669-93bb-5d6ef92631fb.png)
 
+![joinstr header-256](https://user-images.githubusercontent.com/94559964/212629616-ebfce2ae-7ace-4c74-be05-b3d30aa695ba.png)
 
  **Requirements:**
 
