@@ -81,7 +81,8 @@ GUI
 6. Use NIP 9 to delete events after round is completed
 7. Create an Android app.
 
-:information_source: Feel free to create issues, pull request and contact me by email at alicexbt[at]protonmail[dot]com
+:green_circle: Matrix room: #joinstr:matrix.org  
+:green_circle: Nostr: 1440000bytes[at]nostr.boats | npub1v6qjdzkwgaydgxjvlnq7vsqxlwf4h0p4j7pt8ktprajd28r82tvs54nzyr
 
 ---
 
