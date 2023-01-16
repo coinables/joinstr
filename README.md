@@ -11,17 +11,29 @@
  - Bitcoin Core
 
  **Usage:**
+ 
+ **CLI**
 
- 1. Run `python coinjoin.py` and enter descriptor for one of the inputs.
+ 1. Run `python joinstr-cli.py` and enter descriptor for one of the inputs.
  2. Script will check inputs for this round in every 30 seconds and register a new adddress for output once 5 inputs are registered.
  3. Similar check happens every 30 seconds for outputs. Last peer should create a PSBT.
  4. Unsigned PSBT will be printed and signed by wallet with `walletprocesspsbt` RPC.
  5. Script will check signed PSBTs and last peer should finalize coinjoin transaction once 5 signed PSBTs are received.
  6. Coinjoin transaction will be broadcasted and txid will be printed.
+ 
+ **GUI**
+ 
+ 1. Clone repo so that templates are available for using `joinstr-web`
+ 2. Run `joinstr-web.py` and open http://127.0.0.1:5000/ in browser.
+ 3. Select one of the inputs from wallet and submit for input registration.
+ 4. A new address will be registered for output once 5 inputs are registered for this round.
+ 5. PSBT will be created and shared.
+ 
+ _GUI is a work in progress and other phases (signing PSBT and broadcasting) are left._
 
- Note: Every step is followed by an eventid which represents the id for event published using python-nostr and could be checked using [nostr gateway](https://nostr.guru/).
+**Examples:**
 
-**Example:**
+CLI
 
 ```
 List of utxos in wallet:
@@ -53,16 +65,18 @@ Coinjoin tx: 75e490b10b15a6a0422f25ff66ad98ef70390c8fecaac02712705dce8cc3564b
 event id: 9b5d4bf279b59e2b6e539e683fba83da72dce2b640360aa95db1b1400be93190
 ```
 
-**First coinjoin transaction using joinstr on signet:**
 
-![image](https://user-images.githubusercontent.com/94559964/185734421-6f79fbae-57eb-4620-b4d5-bfa8af203eec.png)
+GUI
 
+![image](https://user-images.githubusercontent.com/94559964/212611546-3151648b-9171-4237-8443-1cd5d74451ff.png)
+
+![image](https://user-images.githubusercontent.com/94559964/212611743-27a07966-de0e-4761-b062-817be13bf138.png)
 
 **TO DO:**
 
 1. Send each request using new tor circuit.
-2. Use NIP 38
-3. Break UTXOs in pool denominations before coinjoin if amount exceeds pool denomination by more than 50000 sats.
+2. Use NIP 38/48 (encrypted channels) to improve privacy and security.
+3. Break UTXOs in pool denominations before coinjoin.
 5. Do not allow registering different types of inputs for a round.
 6. Use NIP 9 to delete events after round is completed
 7. Create an Android app.
