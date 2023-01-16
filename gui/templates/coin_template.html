@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <style>
+        body {
+          background-color: rgba(0, 0, 0, 0.74);
+          color: #FFF;
+          text-align: center;
+        }
+        div.center {
+          text-align: center;
+          width: 100%;
+          height: 100%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+        table {
+          display: block;
+          margin: auto;
+        }
+        td {
+          width: 50px;
+          vertical-align: middle;
+        }
+    </style>
+    <title>joinstr</title>
+  </head>
+  <body>
+    <div class="center">
+      <form action="/in" method="POST">
+        <table>
+          <thead>
+            <tr>
+              <th></th>
+              <th>UTXO</th>
+              <th>AMOUNT</th>
+            </tr>
+          </thead>
+          {% for txid, vout, amount in zip(tx_list, vout_list, amtlist) %}
+          <tr>
+            <td>
+              <input type="radio" name="utxo" value="{{txid}}:{{vout}}" data-amount="{{amount}}">
+            </td>
+            <td>{{txid}}:{{vout}}&emsp;</td>
+            <td>{{amount}}</td>
+          </tr>
+          {% endfor %}
+        </table>
+        <input type="hidden" name="amount" value="">
+      </div><br>
+
+      <button type="submit" class="btn btn-success">Register input</button>
+
+      <script>
+        const radioButtons = document.querySelectorAll('input[type="radio"]');
+        const amountInput = document.querySelector('input[name="amount"]');
+
+        for (let radioButton of radioButtons) {
+          radioButton.addEventListener('change', () => {
+            amountInput.value = radioButton.dataset.amount;
+          });
+        }
+
+        function handleFormSubmit() {
+          const utxo = document.querySelector('input[name="utxo"]:checked').value;
+          const amount = document.querySelector('input[name="amount"]').value;
+      }
+      </script>
+
+  </body>
+  </html>
+
+
+
