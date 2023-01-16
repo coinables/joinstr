@@ -81,7 +81,7 @@ GUI
 7. Create an Android app.
 
 :green_circle: Matrix room: #joinstr:matrix.org  
-:green_circle: Nostr: 1440000bytes[at]nostr.boats | npub1v6qjdzkwgaydgxjvlnq7vsqxlwf4h0p4j7pt8ktprajd28r82tvs54nzyr
+:green_circle: Nostr channel: `379bfcf8b739b4ca3c117c729c3c9311dd7868a04433d4aa413989ee2945ba81`
 
 ---
 
