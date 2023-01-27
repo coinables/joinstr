@@ -86,12 +86,11 @@ def publish(data):
 
     public_key, private_key = getkey()
 
-    event = Event(public_key.hex(), json.dumps(data), kind=896)
-    event.sign(private_key.hex())
+    event = Event(private_key.public_key.hex(), json.dumps(data), kind=896)
+    private_key.sign_event(event)
     eventid = event.id
 
-    message = json.dumps([ClientMessageType.EVENT, event.to_json_object()])
-    relay_manager.publish_message(message)
+    relay_manager.publish_message(event)
     time.sleep(1)
     relay_manager.close_connections()
 
