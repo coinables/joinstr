@@ -23,7 +23,7 @@
  **GUI**
  
  1. Clone repo so that templates are available for using `joinstr-web`
- 2. Run `joinstr-web.py` and open http://127.0.0.1:5000/ in browser.
+ 2. Run `export FLASK_APP=joinstr-web`, `flask run` and open http://127.0.0.1:5000/ in browser.
  3. Select one of the inputs from wallet and submit for input registration.
  4. A new address will be registered for output once 5 inputs are registered for this round.
  5. PSBT will be created and shared.
