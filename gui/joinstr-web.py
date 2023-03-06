@@ -35,10 +35,11 @@ round_output_list =[]
 round_tx_list =[]
 round_vout_list =[]
 round_amt_list = []
+round_psbt_list = []
 
 def zip_function(a, b):
-    return zip(a, b)
-
+    return zip(a, b) 
+  
 env = Environment(loader=FileSystemLoader('templates'))
 env.globals['zip'] = zip_function
 
@@ -74,19 +75,18 @@ def getcoins():
         vout_list.append(str(vout))
         amount = response.json()['result'][i]['amount']
         amtlist.append(str(amount))
-        i = i + 1
+        i = i + 1        
     return tx_list,vout_list,amtlist
 
 def publish(data):
 
     relay_manager = RelayManager()
-    relay_manager.add_relay("wss://nostr.onsats.org")
+    relay_manager.add_relay("wss://nostr.openordex.org")
     relay_manager.open_connections()
     time.sleep(2)
 
     public_key, private_key = getkey()
-
-    event = Event(private_key.public_key.hex(), json.dumps(data), kind=896)
+    event = Event(private_key.public_key.hex(), json.dumps(data), kind=10110)
     private_key.sign_event(event)
     eventid = event.id
 
@@ -100,13 +100,13 @@ def getevents(event_type):
 
     random_id = get_random_string(10)
 
-    filters = Filters([Filter(kinds=[896])])
+    filters = Filters([Filter(kinds=[10110])])
     subscription_id = random_id
     request = [ClientMessageType.REQUEST, subscription_id]
     request.extend(filters.to_json_array())
 
     relay_manager = RelayManager()
-    relay_manager.add_relay("wss://nostr.onsats.org")
+    relay_manager.add_relay("wss://nostr.openordex.org")
     relay_manager.add_subscription(subscription_id, filters)
     relay_manager.open_connections()
     time.sleep(1.25)
@@ -119,10 +119,10 @@ def getevents(event_type):
     amount_list = []
     output_list =[]
     event = {}
-    upsbt = []
     spsbt = []
 
     i = 0
+
 
     while relay_manager.message_pool.has_events():
         event_msg = relay_manager.message_pool.get_event()
@@ -138,11 +138,6 @@ def getevents(event_type):
                 output_list.append(event['address'])
             except:
                 continue
-        elif event_type == "unsigned":
-            try:
-                upsbt.append(event['unsigned_psbt'])
-            except:
-                    continue
         elif event_type == "signed":
             try:
                 spsbt.append(event['signed_psbt'])
@@ -153,13 +148,13 @@ def getevents(event_type):
 
     relay_manager.close_connections()
 
-    return event,utxo_list,amount_list, output_list,upsbt,spsbt,i
+    return event,utxo_list,amount_list, output_list,spsbt,i
 
 def checkevents(event_type):
 
     time.sleep(30)
 
-    event,input_list,amount_list,output_list,upsbt,spsbt,num_i = getevents(event_type)
+    event,input_list,amount_list,output_list,spsbt,num_i = getevents(event_type)
 
     if num_i % 5 !=0 or num_i == 0:
         checkevents(event_type)
@@ -171,11 +166,16 @@ def checkevents(event_type):
         elif event_type == 'output':
             for k in range(len(output_list) - 5, len(output_list)):
                 round_output_list.append(output_list[k])
-
+        elif event_type == 'signed':
+            for k in range(len(spsbt) - 5, len(spsbt)):
+                round_psbt_list.append(spsbt[k])
+        
         if event_type == 'input':
             return round_input_list,round_amt_list
         elif event_type == 'output':
             return round_output_list
+        elif event_type == 'signed':
+            return round_psbt_list
 
 def getaddress():
     payload = "{\"jsonrpc\": \"1.0\", \"id\": \"joinstr\", \"method\": \"getnewaddress\"}"
@@ -203,15 +203,23 @@ def createtx(round_tx_list, round_vout_list, round_output_list, postmix_ov):
 
     return upsbt
 
+def signtx(unsigned_psbt):
+
+    payload = "{\"jsonrpc\": \"1.0\",\r\n \"id\": \"joinstr\",\r\n  \"method\": \"walletprocesspsbt\",\r\n  \"params\": [\"" + str(unsigned_psbt) + "\"]\r\n}"
+    response = requests.request("POST", url, headers=headers, data=payload)
+
+    signed_psbt = response.json()['result']['psbt']
+
+    return signed_psbt
+
 @app.route('/main')
 def select_input():
     tx_list,vout_list, amtlist = getcoins()
     return render_template('coin_template.html', tx_list=tx_list, vout_list=vout_list, amtlist=amtlist, zip=zip)
 
 @app.route('/in', methods=['GET','POST'])
-@snoop
 def publishandcheck_input():
-
+    
     utxo = request.form['utxo']
     amount = request.form['amount']
     data = {}
@@ -230,7 +238,6 @@ def publishandcheck_input():
     return render_template('in_template.html', eventid=eventid, loading=loading)
 
 @app.route('/out', methods=['GET'])
-@snoop
 def publishandcheck_output():
 
     '''
@@ -252,9 +259,8 @@ def publishandcheck_output():
     return render_template('out_template.html', eventid=eventid, loading=loading)
 
 @app.route('/psbt', methods=['GET'])
-@snoop
 def createpsbt():
-
+    
     input_sum = sum(session.get('round_amt_list'))
     input_list = session.get('round_input_list')
     round_output_list = session.get('round_output_list')
@@ -270,11 +276,29 @@ def createpsbt():
     unsigned_psbt = createtx(round_tx_list, round_vout_list, round_output_list, postmix_ov)
 
     loading = True
+    session['unsigned_psbt'] = unsigned_psbt
 
     return render_template('psbt_template.html', psbt = unsigned_psbt, loading=loading)
 
+@app.route('/sign', methods=['GET'])
+def publishandcheck_signedpsbt():
+
+    psbt = session.get('unsigned_psbt')
+    signed_psbt = signtx(psbt)
+
+    data = {}
+    data["signed_psbt"] = signed_psbt
+    data["type"] = "signed"
+
+    eventid = publish(data)
+
+    thread = threading.Thread(target=checkevents, args=('signed',), daemon=True)
+    thread.start()
+    loading=True
+
+    return render_template('sign_template.html', eventid=eventid, loading=loading)
+
 @app.route('/check-status/<event_type>')
-@snoop
 def check_status(event_type):
     if event_type == 'input':
         session['round_input_list'] = round_input_list
@@ -283,9 +307,13 @@ def check_status(event_type):
     elif event_type == 'output':
         session['round_output_list'] = round_output_list
         list_to_check = round_output_list
+    elif event_type == 'signed':
+        list_to_check = round_psbt_list
 
     if len(list_to_check) == 5:
+        print("true")
         return 'true'
     else:
+        print("false")
         return 'false'
 

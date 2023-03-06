@@ -56,24 +56,17 @@
     <title>joinstr</title>
   </head>
   <body>
-    {% if loading %}
     <div class=center>
-      <p>Unsigned PSBT:</p>
-      <textarea rows="5" cols="50">{{ psbt }}</textarea>
-    </div>
-    <div class="loadingio-spinner-rolling-y8g3k7kgi3t"><div class="ldio-xwsmufaoo8a">
-      <div></div>
-      </div></div>
-    <div class="center">
-      <p>Signing PSBT...</p>
-    </div> 
-    <script>
-      $(document).ready(function() { 
-        setTimeout(function() {
-          window.location.href = '/sign';
-        }, 15000);
-      });
-    </script>      
-  {% endif %} 
+    <p>Signed PSBT published for the round: <a href="https://nostr.guru/e/{{ eventid }}">{{ eventid }}</a></p>    
+  </div>
+  {% if loading %}
+  <div class="loadingio-spinner-rolling-y8g3k7kgi3t"><div class="ldio-xwsmufaoo8a">
+    <div></div>
+    </div></div>
+<div class="center">
+    <p>Checking signed PSBTs...</p>
+</div> 
+{% endif %}
+
   </body>
 </html>
